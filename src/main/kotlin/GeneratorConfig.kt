@@ -15,6 +15,7 @@ class GeneratorConfig {
 	val useTexturesAsItems: Boolean
 	val namePostfix: String
 	val includeMissingTexture: Boolean
+	val includePath: Boolean
 
 	val atlasSheetName: String
 	val atlasDataName: String
@@ -46,6 +47,7 @@ class GeneratorConfig {
 		this.useTexturesAsItems = properties.getProperty("general.use-textures-as-items").toBoolean()
 		this.namePostfix = properties.getProperty("general.name-postfix") ?: ""
 		this.includeMissingTexture = properties.getProperty("general.include-missing-texture").toBoolean()
+		this.includePath = properties.getProperty("general.include-path").toBoolean()
 
 		this.atlasSheetName = properties.getProperty("atlas.sheet.name") + this.namePostfix
 		this.atlasDataName = properties.getProperty("atlas.data.name") + this.namePostfix

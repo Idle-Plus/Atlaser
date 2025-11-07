@@ -21,7 +21,15 @@ fun main() {
 		var count = 0
 		config.sourceDir.walk().forEach {
 			if (!it.isFile || it.extension != "png") return@forEach
-			val name = it.nameWithoutExtension
+			if (!config.includePath) {
+				val name = it.nameWithoutExtension
+				ITEMS[count] = name
+				count++
+				return@forEach
+			}
+
+			val relativePath = it.relativeTo(config.sourceDir).path
+			val name = relativePath.substringBeforeLast(".").replace("\\", "/")
 			ITEMS[count] = name
 			count++
 		}
@@ -35,7 +43,13 @@ fun main() {
 	// Find all the textures.
 	config.sourceDir.walk().forEach {
 		if (!it.isFile || it.extension != "png") return@forEach
-		TEXTURES[it.nameWithoutExtension] = it.relativeTo(config.sourceDir).path
+		if (!config.includePath) {
+			TEXTURES[it.nameWithoutExtension] = it.relativeTo(config.sourceDir).path
+			return@forEach
+		}
+
+		val relativePath = it.relativeTo(config.sourceDir).path
+		TEXTURES[relativePath.substringBeforeLast(".").replace("\\", "/")] = relativePath
 	}
 
 	// Create the generator.
